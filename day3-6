@@ -1,0 +1,121 @@
+🎯 Goal:
+
+Create a page that allows anyone to search for found documents by document type or number, and display the results from the database.
+
+🪜 Step 1: Create a New File
+
+Inside your main project folder (lost_document_tracker/),
+create a new file named:
+
+search_found.php
+
+🪜 Step 2: Add This Code
+<?php include('includes/db_connect.php'); ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Found Documents</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Search Found Documents</h2>
+
+  <form method="GET" action="">
+    <label>Search by Document Type or Number:</label><br>
+    <input type="text" name="search" placeholder="Enter document type or number..." required>
+    <button type="submit">Search</button>
+  </form>
+
+  <hr>
+
+  <?php
+  if (isset($_GET['search'])) {
+      $search = $_GET['search'];
+      $sql = "SELECT * FROM found_documents 
+              WHERE doc_type LIKE '%$search%' 
+              OR doc_number LIKE '%$search%'
+              ORDER BY date DESC";
+
+      $result = $conn->query($sql);
+
+      if ($result->num_rows > 0) {
+          echo "<table border='1' cellpadding='10'>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Document Type</th>
+                    <th>Document Number</th>
+                    <th>Contact</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                  </tr>";
+
+          while ($row = $result->fetch_assoc()) {
+              echo "<tr>
+                      <td>{$row['id']}</td>
+                      <td>{$row['name']}</td>
+                      <td>{$row['doc_type']}</td>
+                      <td>{$row['doc_number']}</td>
+                      <td>{$row['contact']}</td>
+                      <td>{$row['description']}</td>
+                      <td>{$row['date']}</td>
+                    </tr>";
+          }
+
+          echo "</table>";
+      } else {
+          echo "<p style='color:red;'>No documents found for '$search'.</p>";
+      }
+  }
+  ?>
+</body>
+</html>
+
+🪜 Step 3: Test in Browser
+
+Open your browser and go to:
+
+http://localhost/lost_document_tracker/search_found.php
+
+
+Try:
+
+Searching for “Citizenship”
+
+Or for a document number that was inserted earlier
+
+You should see the table showing matching results from found_documents.
+
+🪜 Step 4: Style Table (Optional for Now)
+
+You can add this CSS to your existing style.css file to make the results table look better:
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #007bff;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+✅ End of Day 3 Checklist (Friend)
+Task	Status
+Create search_found.php	⬜
+Add HTML search form	⬜
+Fetch and display results from database	⬜
+Test search function	⬜
+Style table (optional)	⬜
