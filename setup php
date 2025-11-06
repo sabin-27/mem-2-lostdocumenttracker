@@ -1,124 +1,51 @@
-🎯 Goal:
-
-Set up the project environment for the Found Document Tracker, create folders, database connection, and homepage.
-
-🪜 Step 1: Open XAMPP and Start Servers
-
-Open XAMPP Control Panel
-
-Start:
-
-Apache ✅
-
-MySQL ✅
-
-🪜 Step 2: Create Project Folder
-
-Go to XAMPP folder → C:\xampp\htdocs\
-
-Create a new folder:
-
-lost_document_tracker
-
-
-Inside this folder, create subfolders:
-
-includes
-uploads
-
-
-✅ Folder structure should look like:
-
-lost_document_tracker/
-│
-├── includes
-└── uploads
-
-🪜 Step 3: Create Database in phpMyAdmin
-
-Open browser → http://localhost/phpmyadmin/
-
-Click New → Database name:
-
-lost_doc_db
-
-
-Click Create
-
-Create tables for Found Documents (your friend focuses on found table):
-
-CREATE TABLE found_documents (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100),
-  doc_type VARCHAR(50),
-  doc_number VARCHAR(50),
-  contact VARCHAR(100),
-  description TEXT,
-  date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-
-(Optional: also create lost_documents table if needed for search later, but focus on found_documents today)
-
-🪜 Step 4: Create Database Connection File
-
-Inside includes/, create:
-
-db_connect.php
-
-
-Open and paste:
-
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "lost_doc_db";
-
-$conn = new mysqli($servername, $username, $password, $database);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-?>
-
-
-✅ This will allow all PHP pages to connect to the database.
-
-🪜 Step 5: Create Homepage File
-
-In main folder, create:
-
-index.php
-
-
-Add a simple welcome page:
-
 <?php include('includes/db_connect.php'); ?>
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lost & Found Document Tracker</title>
+  <title>Report Found Document</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Welcome to Lost & Found Document Tracker</h1>
-  <p>This project helps to report and track lost or found documents easily.</p>
+  <h2>Report Found Document</h2>
+
+  <form method="POST" action="">
+    <label>Your Name:</label><br>
+    <input type="text" name="name" required><br><br>
+
+    <label>Document Type:</label><br>
+    <input type="text" name="doc_type" placeholder="e.g. Citizenship, License, ID Card" required><br><br>
+
+    <label>Document Number:</label><br>
+    <input type="text" name="doc_number"><br><br>
+
+    <label>Contact Information:</label><br>
+    <input type="text" name="contact" placeholder="Phone, Email or Address" required><br><br>
+
+    <label>Additional Description:</label><br>
+    <textarea name="description" rows="4" placeholder="Where and when you found it..." required></textarea><br><br>
+
+    <button type="submit" name="submit">Submit</button>
+  </form>
+
+  <?php
+  if (isset($_POST['submit'])) {
+      $name = $_POST['name'];
+      $doc_type = $_POST['doc_type'];
+      $doc_number = $_POST['doc_number'];
+      $contact = $_POST['contact'];
+      $description = $_POST['description'];
+
+      $sql = "INSERT INTO found_documents (name, doc_type, doc_number, contact, description)
+              VALUES ('$name', '$doc_type', '$doc_number', '$contact', '$description')";
+
+      if ($conn->query($sql) === TRUE) {
+          echo "<p style='color: green;'>Document reported successfully!</p>";
+      } else {
+          echo "<p style='color: red;'>Error: " . $conn->error . "</p>";
+      }
+  }
+  ?>
 </body>
 </html>
 
-🪜 Step 6: Test Homepage
-
-Open browser → http://localhost/lost_document_tracker/
-
-You should see the welcome text ✅
-
-✅ End of Day 1 Checklist for Friend
-Task	Status
-XAMPP setup & servers running	⬜
-Project folder + subfolders created	⬜
-Database created	⬜
-db_connect.php created	⬜
-index.php homepage created	⬜
-Homepage tested	⬜
-
-After this, tomorrow (Day 2), your friend will create report_found.php form page with HTML + PHP, just like you do for lost documents.
