@@ -1,7 +1,52 @@
-http://localhost/phpmyadmin/
-Click New → Database name: lost_doc_db
+🎯 Goal:
+
+Set up the project environment for the Found Document Tracker, create folders, database connection, and homepage.
+
+🪜 Step 1: Open XAMPP and Start Servers
+
+Open XAMPP Control Panel
+
+Start:
+
+Apache ✅
+
+MySQL ✅
+
+🪜 Step 2: Create Project Folder
+
+Go to XAMPP folder → C:\xampp\htdocs\
+
+Create a new folder:
+
+lost_document_tracker
+
+
+Inside this folder, create subfolders:
+
+includes
+uploads
+
+
+✅ Folder structure should look like:
+
+lost_document_tracker/
+│
+├── includes
+└── uploads
+
+🪜 Step 3: Create Database in phpMyAdmin
+
+Open browser → http://localhost/phpmyadmin/
+
+Click New → Database name:
+
+lost_doc_db
+
+
 Click Create
+
 Create tables for Found Documents (your friend focuses on found table):
+
 CREATE TABLE found_documents (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100),
@@ -11,9 +56,19 @@ CREATE TABLE found_documents (
   description TEXT,
   date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-Step 4: Create Database Connection File
+
+
+(Optional: also create lost_documents table if needed for search later, but focus on found_documents today)
+
+🪜 Step 4: Create Database Connection File
+
+Inside includes/, create:
+
 db_connect.php
+
+
 Open and paste:
+
 <?php
 $servername = "localhost";
 $username = "root";
@@ -26,8 +81,19 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 ?>
-step 5; Create Homepage File;
+
+
+✅ This will allow all PHP pages to connect to the database.
+
+🪜 Step 5: Create Homepage File
+
+In main folder, create:
+
 index.php
+
+
+Add a simple welcome page:
+
 <?php include('includes/db_connect.php'); ?>
 <!DOCTYPE html>
 <html>
@@ -39,3 +105,20 @@ index.php
   <p>This project helps to report and track lost or found documents easily.</p>
 </body>
 </html>
+
+🪜 Step 6: Test Homepage
+
+Open browser → http://localhost/lost_document_tracker/
+
+You should see the welcome text ✅
+
+✅ End of Day 1 Checklist for Friend
+Task	Status
+XAMPP setup & servers running	⬜
+Project folder + subfolders created	⬜
+Database created	⬜
+db_connect.php created	⬜
+index.php homepage created	⬜
+Homepage tested	⬜
+
+After this, tomorrow (Day 2), your friend will create report_found.php form page with HTML + PHP, just like you do for lost documents.
