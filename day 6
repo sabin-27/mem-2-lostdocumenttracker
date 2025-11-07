@@ -1,0 +1,102 @@
+🎯 Goal:
+
+Create a main homepage (index.php) that links all pages —
+so users can easily navigate between Lost and Found features.
+
+🪜 Step 1: Create a Homepage File
+
+Inside the project folder, create
+📁 index.php
+
+🪜 Step 2: Add This Code
+
+Paste this 👇
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lost & Found Document Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      padding-top: 50px;
+      background-color: #f5f6fa;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    a {
+      display: inline-block;
+      margin: 15px;
+      padding: 15px 25px;
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+    a:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Lost & Found Document Tracker</h1>
+  <p>Quickly report, search, and track documents</p>
+
+  <a href="report_lost.php">📄 Report Lost Document</a>
+  <a href="search_lost.php">🔍 Search Lost Document</a>
+  <a href="report_found.php">📃 Report Found Document</a>
+  <a href="search_found.php">🔎 Search Found Document</a>
+
+  <footer style="margin-top:50px; color:#7f8c8d;">
+    Developed by <b>[Your Name]</b> & <b>[Friend’s Name]</b>, BCA 4th Sem TU
+  </footer>
+
+</body>
+</html>
+
+🪜 Step 3: Test the Homepage
+
+Open in browser:
+👉 http://localhost/lost_document_tracker/index.php
+
+You’ll see 4 main buttons:
+
+📄 Report Lost Document
+
+🔍 Search Lost Document
+
+📃 Report Found Document
+
+🔎 Search Found Document
+
+Click each button — all pages should open smoothly.
+
+🪜 Step 4: Folder Structure Check
+
+Make sure both of you have this layout 👇
+
+lost_document_tracker/
+│
+├── index.php
+│
+├── report_lost.php
+├── search_lost.php
+├── report_found.php
+├── search_found.php
+│
+├── includes/
+│   └── db_connect.php
+│
+├── style.css
+└── uploads/     ← optional
+
+✅ End of Day 6 Checklist (Friend)
+Task	Status
+Create index.php homepage	⬜
+Link Lost + Found pages	⬜
+Test all navigation links	⬜
+Verify all forms and searches open	⬜
