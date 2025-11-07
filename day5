@@ -1,0 +1,93 @@
+🧩 Day 5 – Friend’s Work (Search Found Document Page)
+🎯 Goal:
+
+Let users search for found documents that others have reported — so if someone lost a license, they can see if anyone found it.
+
+🪜 Step 1: Create File
+
+Inside the same project folder, create
+📁 search_found.php
+
+🪜 Step 2: Add This Code
+
+Paste this 👇
+
+<?php include('includes/db_connect.php'); ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Found Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Search Found Document</h2>
+
+  <form method="POST" action="">
+    <input type="text" name="search" placeholder="Enter document type or number..." required>
+    <button type="submit" name="submit">Search</button>
+  </form>
+
+  <hr>
+
+  <?php
+  if (isset($_POST['submit'])) {
+      $search = $_POST['search'];
+
+      $sql = "SELECT * FROM found_documents 
+              WHERE doc_type LIKE '%$search%' 
+              OR doc_number LIKE '%$search%' 
+              OR description LIKE '%$search%'";
+
+      $result = $conn->query($sql);
+
+      if ($result->num_rows > 0) {
+          echo "<h3>Search Results:</h3>";
+          echo "<table border='1' cellpadding='10'>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Document Type</th>
+                    <th>Document Number</th>
+                    <th>Contact</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                  </tr>";
+          while ($row = $result->fetch_assoc()) {
+              echo "<tr>
+                      <td>{$row['id']}</td>
+                      <td>{$row['name']}</td>
+                      <td>{$row['doc_type']}</td>
+                      <td>{$row['doc_number']}</td>
+                      <td>{$row['contact']}</td>
+                      <td>{$row['description']}</td>
+                      <td>{$row['date']}</td>
+                    </tr>";
+          }
+          echo "</table>";
+      } else {
+          echo "<p style='color:red;'>No matching found documents found.</p>";
+      }
+  }
+  ?>
+</body>
+</html>
+
+🪜 Step 3: Test It
+
+In the browser open
+👉 http://localhost/lost_document_tracker/search_found.php
+
+Type keywords that match records from found_documents —
+e.g. “citizenship”, “license”, etc.
+
+You’ll see:
+✅ Matching results in a table,
+❌ or “No matching found documents found.”
+
+🪜 Step 4 (Optional – Add Navigation)
+
+At the bottom, you can add a link back to report page:
+
+<br>
+<a href="report_found.php">Report Another Found Document</a>
