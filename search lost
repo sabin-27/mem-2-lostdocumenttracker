@@ -1,0 +1,87 @@
+<?php include('includes/db_connect.php'); ?>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Lost Documents</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<header>
+  <nav class="navbar">
+    <a href="index.php">Home</a>
+    <a href="report_lost.php">Report Lost</a>
+    <a href="search_lost.php">Search Lost</a>
+  </nav>
+</header>
+
+<body>
+  <div class="container">
+    <h2>🔍 Search Lost Documents</h2>
+
+    <form method="GET" action="">
+      <input type="text" name="query" placeholder="Enter name or document number..." required>
+      <button type="submit">Search</button>
+    </form>
+    <br>
+
+    <?php
+    if (isset($_GET['query'])) {
+      $query = $_GET['query'];
+
+      $sql = "SELECT * FROM lost_documents 
+              WHERE name LIKE '%$query%' 
+              OR doc_number LIKE '%$query%' 
+              OR doc_type LIKE '%$query%'";
+
+      $result = $conn->query($sql);
+
+      if ($result->num_rows > 0) {
+        echo "<table>";
+        echo "<tr><th>Name</th><th>Type</th><th>Doc No.</th><th>Contact</th><th>Description</th><th>Date</th></tr>";
+        while($row = $result->fetch_assoc()) {
+          echo "<tr>";
+          echo "<td>" . $row['name'] . "</td>";
+          echo "<td>" . $row['doc_type'] . "</td>";
+          echo "<td>" . $row['doc_number'] . "</td>";
+          echo "<td>" . $row['contact'] . "</td>";
+          echo "<td>" . $row['description'] . "</td>";
+          echo "<td>" . $row['date'] . "</td>";
+          echo "</tr>";
+        }
+        echo "</table>";
+      } else {
+        echo "<p class='error'>❌ No matching records found.</p>";
+      }
+    }
+    ?>
+
+    <br>
+    <h3>📋 All Lost Documents</h3>
+    <?php
+    $sql = "SELECT * FROM lost_documents ORDER BY date DESC";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+      echo "<table>";
+      echo "<tr><th>Name</th><th>Type</th><th>Doc No.</th><th>Contact</th><th>Description</th><th>Date</th></tr>";
+      while($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . $row['name'] . "</td>";
+        echo "<td>" . $row['doc_type'] . "</td>";
+        echo "<td>" . $row['doc_number'] . "</td>";
+        echo "<td>" . $row['contact'] . "</td>";
+        echo "<td>" . $row['description'] . "</td>";
+        echo "<td>" . $row['date'] . "</td>";
+        echo "</tr>";
+      }
+      echo "</table>";
+    } else {
+      echo "<p>No lost documents reported yet.</p>";
+    }
+    ?>
+  </div>
+</body>
+<footer>
+  <p>© 2025 Lost Document Tracker | BCA 4th Sem Project</p>
+</footer>
+
+</html>
