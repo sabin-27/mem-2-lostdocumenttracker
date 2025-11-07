@@ -1,0 +1,63 @@
+<?php include('includes/db_connect.php'); ?>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Report Lost Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<header>
+  <nav class="navbar">
+    <a href="index.php">Home</a>
+    <a href="report_lost.php">Report Lost</a>
+    <a href="search_lost.php">Search Lost</a>
+  </nav>
+</header>
+
+<body>
+  <div class="container">
+    <h2>Report a Lost Document</h2>
+    <form method="POST" action="">
+      <label>Name:</label><br>
+      <input type="text" name="name" required><br><br>
+
+      <label>Document Type:</label><br>
+      <input type="text" name="doc_type" required><br><br>
+
+      <label>Document Number:</label><br>
+      <input type="text" name="doc_number" required><br><br>
+
+      <label>Contact:</label><br>
+      <input type="text" name="contact" required><br><br>
+
+      <label>Description:</label><br>
+      <textarea name="description" required></textarea><br><br>
+
+      <button type="submit" name="submit">Submit</button>
+    </form>
+
+    <?php
+    if (isset($_POST['submit'])) {
+      $name = $_POST['name'];
+      $doc_type = $_POST['doc_type'];
+      $doc_number = $_POST['doc_number'];
+      $contact = $_POST['contact'];
+      $description = $_POST['description'];
+
+      $sql = "INSERT INTO lost_documents (name, doc_type, doc_number, contact, description)
+              VALUES ('$name', '$doc_type', '$doc_number', '$contact', '$description')";
+      if ($conn->query($sql) === TRUE) {
+        echo "<p class='success'>✅ Lost document reported successfully!</p>";
+      } else {
+        echo "<p class='error'>❌ Error: " . $conn->error . "</p>";
+      }
+    }
+    ?>
+  </div>
+</body>
+<footer>
+  <p>© 2025 Lost Document Tracker | BCA 4th Sem Project</p>
+</footer>
+
+</html>
+
+
