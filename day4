@@ -1,0 +1,127 @@
+day 4
+🧩 Day 4 – Your Friend’s Work (Found Document Form Functionality)
+🎯 Goal:
+
+Make the Report Found Document page fully functional so users can fill out a form, and the data gets saved to the found_documents table in MySQL.
+
+🪜 Step 1: Create Table for Found Documents
+
+Open phpMyAdmin → your database (lost_doc_db) → SQL tab
+and paste this 👇
+
+CREATE TABLE found_documents (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  doc_type VARCHAR(50),
+  doc_number VARCHAR(50),
+  contact VARCHAR(100),
+  description TEXT,
+  date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+Click Go ✅
+Now the table is ready.
+
+🪜 Step 2: Create File for Reporting Found Documents
+
+Inside your project folder, create a new file:
+📁 report_found.php
+
+Paste this code 👇
+
+<?php include('includes/db_connect.php'); ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Report Found Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Report Found Document</h2>
+
+  <form method="POST" action="">
+    <label>Your Name:</label><br>
+    <input type="text" name="name" required><br><br>
+
+    <label>Document Type:</label><br>
+    <input type="text" name="doc_type" placeholder="e.g. Citizenship, License, ID Card" required><br><br>
+
+    <label>Document Number:</label><br>
+    <input type="text" name="doc_number"><br><br>
+
+    <label>Contact Information:</label><br>
+    <input type="text" name="contact" placeholder="Phone, Email or Address" required><br><br>
+
+    <label>Additional Description:</label><br>
+    <textarea name="description" rows="4" placeholder="Where and when you found it..." required></textarea><br><br>
+
+    <button type="submit" name="submit">Submit</button>
+  </form>
+
+  <?php
+  if (isset($_POST['submit'])) {
+      $name = $_POST['name'];
+      $doc_type = $_POST['doc_type'];
+      $doc_number = $_POST['doc_number'];
+      $contact = $_POST['contact'];
+      $description = $_POST['description'];
+
+      $sql = "INSERT INTO found_documents (name, doc_type, doc_number, contact, description)
+              VALUES ('$name', '$doc_type', '$doc_number', '$contact', '$description')";
+
+      if ($conn->query($sql) === TRUE) {
+          echo "<p style='color:green;'>Found document reported successfully!</p>";
+      } else {
+          echo "<p style='color:red;'>Error: " . $conn->error . "</p>";
+      }
+  }
+  ?>
+</body>
+</html>
+
+🪜 Step 3: Test
+
+Open browser →
+👉 http://localhost/lost_document_tracker/report_found.php
+
+Fill the form and submit.
+
+Message should appear:
+✅ “Found document reported successfully!”
+
+In phpMyAdmin → found_documents → Browse, you’ll see your test record.
+
+🪜 Step 4 (Optional – show entries instantly)
+
+Below the PHP code that handles the form, add this snippet to show all found entries immediately:
+
+echo "<h3>All Reported Found Documents</h3>";
+$result = $conn->query("SELECT * FROM found_documents ORDER BY id DESC");
+if ($result->num_rows > 0) {
+    echo "<table border='1' cellpadding='10'>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Document Type</th>
+              <th>Number</th>
+              <th>Contact</th>
+              <th>Description</th>
+              <th>Date</th>
+            </tr>";
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>
+                <td>{$row['id']}</td>
+                <td>{$row['name']}</td>
+                <td>{$row['doc_type']}</td>
+                <td>{$row['doc_number']}</td>
+                <td>{$row['contact']}</td>
+                <td>{$row['description']}</td>
+                <td>{$row['date']}</td>
+              </tr>";
+    }
+    echo "</table>";
+} else {
+    echo "<p>No records yet.</p>";
+}
